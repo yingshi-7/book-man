@@ -2,7 +2,6 @@
 
 //导入axios  npm install axios
 import axios from 'axios';
-import { ElMessage } from 'element-plus';
 //定义一个变量,记录公共的前缀  ,  baseURL
 const baseURL = 'api';
 const instance = axios.create({baseURL})
@@ -11,14 +10,7 @@ const instance = axios.create({baseURL})
 //添加响应拦截器
 instance.interceptors.response.use(
     result=>{
-        //如果业务状态码为0，代表本次操作成功
-        if(result.data.code === 0){
-            return result.data;
-        }
-        //代码走到这里，代表业务状态码不是0，代表本次操作失败
-        // alert(result.data.message ? result.data.message : '操作失败');
-        ElMessage.error(result.data.message ? result.data.message : '操作失败');
-        return Promise.reject(result.data) //异步的状态转化成失败的状态
+        return result.data;
     },
     err=>{
         alert('服务异常');
