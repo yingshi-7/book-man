@@ -34,16 +34,38 @@ const registerDataRules = ref({
   rePassword: [{ validator: rePasswordValid, trigger: 'blur' }]
 })
 
-import { userRegisterService } from '@/api/user';
+import { userRegisterService, userLoginService } from '@/api/user';
+import { ElMessage } from 'element-plus'
 // 用于注册的事件函数
 const register = async () => {
-  if (registerData.value.password !== registerData.value.rePassword){
+  if (registerData.value.password !== registerData.value.rePassword) {
     return
   }
   //registerData是响应式数据，需要用.value获取值
   let result = await userRegisterService(registerData.value)
-  if (result.code===0){
-    console.log(result);
+  if (result.code === 0) {
+    ElMessage({ message: '注册成功', type: 'success' })
+  } else {
+    ElMessage.error(result.message ? result.message : '注册失败')
+  }
+}
+
+// 用于登录的事件函数
+const login = async () => {
+  let result = await userLoginService(registerData.value)
+  if (result.code === 0) {
+    ElMessage.success('登录成功')
+  } else {
+    ElMessage.error('密码错误或账户不存在')
+  }
+}
+
+// 复用注册表单，当点击注册或登录按钮时清空数据模型中的数据
+const clearRegisterData = () => {
+  registerData.value = {
+    username: '',
+    password: '',
+    rePassword: '',
   }
 }
 
@@ -76,7 +98,7 @@ const register = async () => {
           </el-button>
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = false">
+          <el-link type="info" :underline="false" @click="isRegister = false, clearRegisterData()">
             ← 返回
           </el-link>
         </el-form-item>
@@ -101,10 +123,10 @@ const register = async () => {
         </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space>登录</el-button>
+          <el-button class="button" type="primary" auto-insert-space @click="login">登录</el-button>
         </el-form-item>
         <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = true">
+          <el-link type="info" :underline="false" @click="isRegister = true, clearRegisterData()">
             注册 →
           </el-link>
         </el-form-item>
