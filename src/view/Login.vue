@@ -42,22 +42,16 @@ const register = async () => {
     return
   }
   //registerData是响应式数据，需要用.value获取值
-  let result = await userRegisterService(registerData.value)
-  if (result.code === 0) {
-    ElMessage({ message: '注册成功', type: 'success' })
-  } else {
-    ElMessage.error(result.message ? result.message : '注册失败')
-  }
+  await userRegisterService(registerData.value)
+  ElMessage({ message: '注册成功', type: 'success' })
+  // ElMessage.error(result.message ? result.message : '注册失败')
 }
 
 // 用于登录的事件函数
 const login = async () => {
-  let result = await userLoginService(registerData.value)
-  if (result.code === 0) {
-    ElMessage.success('登录成功')
-  } else {
-    ElMessage.error('密码错误或账户不存在')
-  }
+  await userLoginService(registerData.value)
+  ElMessage.success('登录成功')
+  // ElMessage.error('密码错误或账户不存在')
 }
 
 // 复用注册表单，当点击注册或登录按钮时清空数据模型中的数据
