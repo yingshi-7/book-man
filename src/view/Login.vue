@@ -2,6 +2,9 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+// 定义router, 用于跳转到注册页面
+const router = useRouter()
 //控制注册和登录表单的显示，默认显示登录
 const isRegister = ref(false)
 
@@ -55,6 +58,8 @@ const login = async () => {
   let result = await userLoginService(registerData.value)
   if (result.code === 0) {
     ElMessage.success('登录成功')
+    //跳转到首页  路由完成操作
+    router.push('/')
   } else {
     ElMessage.error('密码错误或账户不存在')
   }
