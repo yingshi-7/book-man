@@ -11,6 +11,7 @@ import {
   Crop,
   EditPen,
   SwitchButton,
+  Reading,
 } from '@element-plus/icons-vue'
 import avatar from '../assets/default.png'
 
@@ -22,8 +23,8 @@ import avatar from '../assets/default.png'
       <!-- 左侧菜单栏 -->
       <el-aside width="200px">
         <div class="el-aside_logo"></div>
-        <el-menu default-active="/man/books" class="el-menu-vertical-demo" active-text-color="#ffd04b" background-color="#8b8b8b"
-          text-color="#fff" router>
+        <el-menu default-active="/man/books" active-text-color="#ffd04b" background-color="#8b8b8b" text-color="#fff"
+          router>
           <el-menu-item index="/man/books">
             <el-icon>
               <icon-menu />
@@ -49,9 +50,24 @@ import avatar from '../assets/default.png'
               </el-icon>
               <span>报表统计</span>
             </template>
-            <el-menu-item index="/report/books">图书统计</el-menu-item>
-            <el-menu-item index="/report/borrows">借阅统计</el-menu-item>
-            <el-menu-item index="/report/users">用户统计</el-menu-item>
+            <el-menu-item index="/report/books">
+              <el-icon>
+                <Reading />
+              </el-icon>
+              <span>图书统计</span>
+            </el-menu-item>
+            <el-menu-item index="/report/borrows">
+              <el-icon>
+                <Reading />
+              </el-icon>
+              <span>借阅统计</span>
+            </el-menu-item>
+            <el-menu-item index="/report/users">
+              <el-icon>
+                <Reading />
+              </el-icon>
+              <span>用户统计</span>
+            </el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="/user">
             <template #title>
@@ -60,9 +76,24 @@ import avatar from '../assets/default.png'
               </el-icon>
               <span>个人中心</span>
             </template>
-            <el-menu-item index="/user/info">基本资料</el-menu-item>
-            <el-menu-item index="/user/avatar">更换头像</el-menu-item>
-            <el-menu-item index="/user/password">重置密码</el-menu-item>
+            <el-menu-item index="/user/info">
+              <el-icon>
+                <User />
+              </el-icon>
+              <span>基本资料</span>
+            </el-menu-item>
+            <el-menu-item index="/user/avatar">
+              <el-icon>
+                <Crop />
+              </el-icon>
+              <span>更换头像</span>
+            </el-menu-item>
+            <el-menu-item index="/user/password">
+              <el-icon>
+                <EditPen />
+              </el-icon>
+              <span>重置密码</span>
+            </el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-aside>
@@ -70,8 +101,8 @@ import avatar from '../assets/default.png'
       <el-container>
         <!-- 头部区域 -->
         <el-header>
-          <div>当前用户: <strong>图书管理系统</strong></div>
-          <el-dropdown placement="bottom-end" >
+          <div>当前位置: <strong>图书管理系统</strong></div>
+          <el-dropdown placement="bottom-end">
             <span class="el-dropdown_box">
               <el-avatar :src="avatar" />
               <el-icon>

@@ -59,7 +59,7 @@ const login = async () => {
   if (result.code === 0) {
     ElMessage.success('登录成功')
     //跳转到首页  路由完成操作
-    router.push('/')
+    router.push('/man/books')
   } else {
     ElMessage.error('密码错误或账户不存在')
   }

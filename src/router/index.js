@@ -17,7 +17,12 @@ import ReportUserVue from '@/view/report/ReportUser.vue'
 const routes = [
   { path: '/login', component: LoginVue },
   {
-    path: '/', component: LayoutVue, redirect: '/login', children: [
+    path: '/',
+    component: LayoutVue,
+    // 重定向到登录页面
+    redirect: '/login',
+    // 子路由
+    children: [
       { path: '/man/books', component: BookManVue },
       { path: '/man/borrows', component: BorrowManVue },
       { path: '/man/users', component: UserManVue },
