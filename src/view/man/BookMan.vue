@@ -9,6 +9,14 @@ const bookData = ref([
   { name: '《红楼梦》', author: '曹雪芹', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01', address: '北京出版社' },
 ])
 
+// 获取所有图书信息列表
+import { getBookList } from '@/api/man';
+const getAllBookList = async () => {
+  let res = await getBookList()
+  console.log(res? res:'获取图书列表失败');
+}
+getAllBookList()
+
 const searchData = ref({
   name: '',
   author: '',
