@@ -38,7 +38,8 @@ instance.interceptors.response.use(
         }
         // 错误处理
         // alert(result.data.msg ? result.data.msg : '服务异常');
-        ElMessage.error(result.data.message ? result.data.message : '服务异常')
+        // result.data.message.includes('不能为空')
+        ElMessage.error(result.data.message.includes('不能为空') ? '内容不能为空' : '服务异常')
         //异步的状态转化成失败的状态
         return Promise.reject(result.data);
     },

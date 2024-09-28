@@ -10,9 +10,10 @@ const bookData = ref([
 ])
 
 // 获取所有图书信息列表
-import { getBookList } from '@/api/man.js';
+import { addBookService, getBookListService } from '@/api/man.js';
+import { ElMessage } from 'element-plus';
 const getAllBookList = async () => {
-  let res = await getBookList()
+  let res = await getBookListService()
   console.log(res);
   bookData.value = res.data
 }
@@ -51,6 +52,16 @@ const rules = {
   category: [
     { required: true, message: '请输入图书类别', trigger: 'blur' },
   ]
+}
+
+// 新增图书
+const addBook = async () => {
+  let res = await addBookService(bookModel.value)
+  ElMessage.success(res.message ? res.message : '新增图书成功')
+  // 关闭弹窗
+  dialogVisible.value = false
+  // 刷新图书列表
+  getAllBookList()
 }
 </script>
 
@@ -116,9 +127,7 @@ const rules = {
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
-            确认
-          </el-button>
+          <el-button type="primary" @click="addBook"> 确认 </el-button>
         </div>
       </template>
     </el-dialog>
