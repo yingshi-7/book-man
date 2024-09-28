@@ -4,6 +4,7 @@
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 import { useTokenStore } from '@/store/token';
+import router from '@/router'
 
 //定义一个变量,记录公共的前缀  ,  baseURL
 // const baseURL = 'http://localhost:8080';
