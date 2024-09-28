@@ -11,15 +11,15 @@ const baseURL = '/api';
 const instance = axios.create({ baseURL })
 
 // 添加请求拦截器
-instance.interceptors.response.use(
-    config => {
+instance.interceptors.request.use(
+    confirm => {
         // 在发送请求之前
-        let tokenStore = useTokenStore()
-        // 判断是否有token
+        const tokenStore = useTokenStore()
         if (tokenStore.token){
-            config.headers.Authorization = tokenStore.token
+            // 添加token到请求头
+            confirm.headers.Authorization = tokenStore.token
         }
-        return config
+        return confirm
     },
     error => {
         //请求错误的回调,将异步的状态转化成失败的状态

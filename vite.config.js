@@ -18,9 +18,9 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:8091',// 后端服务器地址
+        rewrite: path => path.replace(/^\/api/, ''), // 将原有请求路径中的api替换为''
         changeOrigin: true,// 是否允许跨域
-        rewrite: path => path.replace(/^\/api/, '')// 将原有请求路径中的api替换为''
       }
     }
-  }
+  },
 })
