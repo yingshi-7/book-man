@@ -3,23 +3,22 @@
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 const bookData = ref([
-  { bookName: '《三国演义》', author: '罗贯中', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01' },
-  { bookName: '《水浒传》', author: '施耐奄', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01' },
-  { bookName: '《西游记》', author: '吴承恩', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01' },
-  { bookName: '《红楼梦》', author: '曹雪芹', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01' },
+  { name: '《三国演义》', author: '罗贯中', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01', address: '北京出版社' },
+  { name: '《水浒传》', author: '施耐奄', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01', address: '北京出版社' },
+  { name: '《西游记》', author: '吴承恩', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01', address: '北京出版社' },
+  { name: '《红楼梦》', author: '曹雪芹', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01', address: '北京出版社' },
 ])
 
 // 获取所有图书信息列表
-import { getBookList } from '@/api/man.js';
+import { getBookList } from '@/api/man';
 const getAllBookList = async () => {
   let res = await getBookList()
-  console.log(res);
-  bookData.value = res.data
+  console.log(res? res:'获取图书列表失败');
 }
 getAllBookList()
 
 const searchData = ref({
-  bookName: '',
+  name: '',
   author: '',
   publishingHouse: '',
   category: ''
@@ -33,7 +32,7 @@ const searchData = ref({
         <div class="select">
           <div>
             <span>书名：</span>
-            <el-input class="input" v-model="searchData.bookName" placeholder="请输入图书名称" />
+            <el-input class="input" v-model="searchData.name" placeholder="请输入图书名称" />
             <span>作者：</span>
             <el-input class="input" v-model="searchData.author" placeholder="请输入作者名称" />
             <span>出版社：</span>
@@ -50,7 +49,7 @@ const searchData = ref({
     </template>
     <el-table :data="bookData" style="width: 100%">
       <el-table-column label="序号" width="100" type="index" />
-      <el-table-column prop="bookName" label="图书" />
+      <el-table-column prop="name" label="图书" />
       <el-table-column prop="author" label="作者" />
       <el-table-column prop="publishingHouse" label="出版社" />
       <el-table-column prop="category" label="分类" />
