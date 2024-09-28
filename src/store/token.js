@@ -26,4 +26,9 @@ export const useTokenStore = defineStore('token', () => {
 
   //4.返回内容
   return { token, setToken, removeToken }
-})
+},
+  // 参数持久化
+  {
+    persist: true
+  }
+)
