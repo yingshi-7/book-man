@@ -19,7 +19,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8091',// 后端服务器地址
         changeOrigin: true,// 是否允许跨域
-        rewrite: path => path.replace(/^\/api/, '')// 将原有请求路径中的api替换为''
+        rewrite: (path) => path.replace(/^\/api/, '')// 将原有请求路径中的api替换为''
       }
     }
   }

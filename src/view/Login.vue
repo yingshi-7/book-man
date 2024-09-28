@@ -2,9 +2,6 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-// 定义router, 用于跳转到注册页面
-const router = useRouter()
 //控制注册和登录表单的显示，默认显示登录
 const isRegister = ref(false)
 
@@ -53,16 +50,21 @@ const register = async () => {
   }
 }
 
+import { useRouter } from 'vue-router'
+import {useTokenStore} from '@/store/token'
+//调用useTokenStore得到状态
+const tokenStore = useTokenStore()
+// 定义router, 用于跳转到注册页面
+const router = useRouter()
 // 用于登录的事件函数
 const login = async () => {
-  let result = await userLoginService(registerData.value)
-  if (result.code === 0) {
+  let res = await userLoginService(registerData.value)
+    //添加token
+    tokenStore.setToken(res.data)
+    
     ElMessage.success('登录成功')
     //跳转到首页  路由完成操作
     router.push('/man/books')
-  } else {
-    ElMessage.error('密码错误或账户不存在')
-  }
 }
 
 // 复用注册表单，当点击注册或登录按钮时清空数据模型中的数据
