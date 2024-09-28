@@ -22,8 +22,36 @@ const searchData = ref({
   bookName: '',
   author: '',
   publishingHouse: '',
-  category: ''
+  category: '',
 })
+
+// 添加新增图书弹窗控制器
+const dialogVisible = ref(false)
+
+// 添加新增图书数据模型(与图书搜索数据模型一致)
+const bookModel = ref({
+  bookName: '',
+  author: '',
+  publishingHouse: '',
+  category: '',
+  createUser: ''
+})
+
+//添加分类表单校验
+const rules = {
+  bookName: [
+    { required: true, message: '请输入图书名称', trigger: 'blur' },
+  ],
+  author: [
+    { required: true, message: '请输入图书作者', trigger: 'blur' },
+  ],
+  publishingHouse: [
+    { required: true, message: '请输入图书出版社', trigger: 'blur' },
+  ],
+  category: [
+    { required: true, message: '请输入图书类别', trigger: 'blur' },
+  ]
+}
 </script>
 
 <template>
@@ -44,7 +72,7 @@ const searchData = ref({
           <el-button class="search" type="primary">搜索</el-button>
         </div>
         <div class="extra">
-          <el-button type="primary">新增图书</el-button>
+          <el-button type="primary" @click="dialogVisible = true">新增图书</el-button>
         </div>
       </div>
     </template>
@@ -54,6 +82,7 @@ const searchData = ref({
       <el-table-column prop="author" label="作者" />
       <el-table-column prop="publishingHouse" label="出版社" />
       <el-table-column prop="category" label="分类" />
+      <el-table-column prop="createUser" label="入库人员" />
       <el-table-column prop="createTime" label="创建时间" />
       <el-table-column prop="updateTime" label="更新时间" />
       <el-table-column label="操作" width="100">
@@ -67,6 +96,32 @@ const searchData = ref({
         <el-empty description="没有数据" />
       </template>
     </el-table>
+
+    <!-- 添加新增图书弹窗 -->
+    <el-dialog v-model="dialogVisible" title="添加弹窗" width="30%">
+      <el-form :model="bookModel" :rules="rules" label-width="100px" style="padding-right: 30px;">
+        <el-form-item label="图书名称" prop="bookName">
+          <el-input v-model="bookModel.bookName" minlength="1" maxlength="10" />
+        </el-form-item>
+        <el-form-item label="图书作者" prop="author">
+          <el-input v-model="bookModel.author" minlength="1" maxlength="10" />
+        </el-form-item>
+        <el-form-item label="出版社" prop="publishingHouse">
+          <el-input v-model="bookModel.publishingHouse" minlength="1" maxlength="10" />
+        </el-form-item>
+        <el-form-item label="图书类别" prop="category">
+          <el-input v-model="bookModel.category" minlength="1" maxlength="10" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">
+            确认
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </el-card>
 </template>
 
