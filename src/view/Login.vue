@@ -62,7 +62,7 @@ const login = async () => {
     //添加token
     tokenStore.setToken(res.data)
     
-    ElMessage.success('登录成功')
+    ElMessage.success('登录成功!')
     //跳转到首页  路由完成操作
     router.push('/man/books')
 }
