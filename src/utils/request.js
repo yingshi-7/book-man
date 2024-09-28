@@ -16,7 +16,7 @@ instance.interceptors.request.use(
     confirm => {
         // 在发送请求之前
         const tokenStore = useTokenStore()
-        if (tokenStore.token) {
+        if (tokenStore.token){
             // 添加token到请求头
             confirm.headers.Authorization = tokenStore.token
         }
