@@ -4,6 +4,7 @@
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 import { useTokenStore } from '@/store/token';
+import router from '@/router';
 
 //定义一个变量,记录公共的前缀  ,  baseURL
 // const baseURL = 'http://localhost:8080';
@@ -15,7 +16,7 @@ instance.interceptors.request.use(
     confirm => {
         // 在发送请求之前
         const tokenStore = useTokenStore()
-        if (tokenStore.token){
+        if (tokenStore.token) {
             // 添加token到请求头
             confirm.headers.Authorization = tokenStore.token
         }
@@ -42,7 +43,14 @@ instance.interceptors.response.use(
         return Promise.reject(result.data);
     },
     err => {
-        alert('服务异常');
+        // 如果响应状态码是401，代表未登录，给出对应的提示，并跳转到登录页
+        if (err.response.status === 401) {
+            ElMessage.error('请先登录!')
+            router.push('/login')
+        } else {
+            ElMessage.error('服务异常')
+        }
+        // alert('服务异常');
         return Promise.reject(err);//异步的状态转化成失败的状态
     }
 )
