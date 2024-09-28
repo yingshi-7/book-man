@@ -9,3 +9,8 @@ export const getBookListService = () => {
 export const addBookService = (bookData) => {
   return request.post('/library',bookData)
 }
+
+// 修改图书信息
+export const updateBookService = (bookData) => {
+  return request.put('/library',bookData)
+}

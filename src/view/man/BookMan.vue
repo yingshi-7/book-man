@@ -10,7 +10,7 @@ const bookData = ref([
 ])
 
 // 获取所有图书信息列表
-import { addBookService, getBookListService } from '@/api/man.js';
+import { addBookService, getBookListService, updateBookService } from '@/api/man.js';
 import { ElMessage } from 'element-plus';
 const getAllBookList = async () => {
   let res = await getBookListService()
@@ -54,7 +54,7 @@ const rules = {
   ]
 }
 
-// 新增图书
+// 新增图书信息
 const addBook = async () => {
   let res = await addBookService(bookModel.value)
   ElMessage.success(res.message ? res.message : '新增图书成功')
@@ -62,6 +62,32 @@ const addBook = async () => {
   dialogVisible.value = false
   // 刷新图书列表
   getAllBookList()
+}
+
+// 弹窗标题
+const title = ref('')
+
+// 修改图书信息回显
+const showDialog = (row) => {
+  title.value = '编辑图书'
+  dialogVisible.value = true
+  //将row中的数据赋值给bookModel
+  bookModel.value = { ...row }
+}
+
+// 修改图书信息
+const updateBook = async () => {
+  let res = await updateBookService(bookModel.value)
+  ElMessage.success(res.message ? res.message : '修改图书成功')
+  // 关闭弹窗
+  dialogVisible.value = false
+  // 刷新图书列表
+  getAllBookList()
+}
+
+// 清空模型数据
+const clearBookModel = () => {
+  bookModel.value = { ...'' }
 }
 </script>
 
@@ -83,7 +109,7 @@ const addBook = async () => {
           <el-button class="search" type="primary">搜索</el-button>
         </div>
         <div class="extra">
-          <el-button type="primary" @click="dialogVisible = true">新增图书</el-button>
+          <el-button type="primary" @click="title = '新增图书'; dialogVisible = true; clearBookModel()">新增图书</el-button>
         </div>
       </div>
     </template>
@@ -99,7 +125,7 @@ const addBook = async () => {
       <el-table-column label="操作" width="100">
         <template #default="{ row }">
           <!-- row 代表当前行的数据,后续在按钮的点击事件中可以用 row 获取当前行的数据 -->
-          <el-button :icon="Edit" circle plain type="primary"></el-button>
+          <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
           <el-button :icon="Delete" circle plain type="danger"></el-button>
         </template>
       </el-table-column>
@@ -109,7 +135,7 @@ const addBook = async () => {
     </el-table>
 
     <!-- 添加新增图书弹窗 -->
-    <el-dialog v-model="dialogVisible" title="添加弹窗" width="30%">
+    <el-dialog v-model="dialogVisible" :title="title" width="30%">
       <el-form :model="bookModel" :rules="rules" label-width="100px" style="padding-right: 30px;">
         <el-form-item label="图书名称" prop="bookName">
           <el-input v-model="bookModel.bookName" minlength="1" maxlength="10" />
@@ -127,7 +153,7 @@ const addBook = async () => {
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="addBook"> 确认 </el-button>
+          <el-button type="primary" @click="title === '新增图书' ? addBook() : updateBook()"> 确认 </el-button>
         </div>
       </template>
     </el-dialog>
