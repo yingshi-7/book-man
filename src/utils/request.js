@@ -42,7 +42,14 @@ instance.interceptors.response.use(
         return Promise.reject(result.data);
     },
     err => {
-        alert('服务异常');
+        // 如果响应状态码是401，代表未登录，给出对应的提示，并跳转到登录页
+        if (err.response.status === 401) {
+            ElMessage.error('请先登录!')
+            router.push('/login')
+        } else {
+            ElMessage.error('服务异常')
+        }
+        // alert('服务异常');
         return Promise.reject(err);//异步的状态转化成失败的状态
     }
 )
