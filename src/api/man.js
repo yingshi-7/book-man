@@ -7,10 +7,15 @@ export const getBookListService = () => {
 
 // 新增图书信息
 export const addBookService = (bookData) => {
-  return request.post('/library',bookData)
+  return request.post('/library', bookData)
 }
 
 // 修改图书信息
 export const updateBookService = (bookData) => {
-  return request.put('/library',bookData)
+  return request.put('/library', bookData)
+}
+
+// 删除图书信息
+export const deleteBookService = (id) => {
+  return request.delete('/library?id=' + id)
 }

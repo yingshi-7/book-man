@@ -10,8 +10,8 @@ const bookData = ref([
 ])
 
 // 获取所有图书信息列表
-import { addBookService, getBookListService, updateBookService } from '@/api/man.js';
-import { ElMessage } from 'element-plus';
+import { addBookService, deleteBookService, getBookListService, updateBookService } from '@/api/man.js';
+import { ElMessage, ElMessageBox } from 'element-plus';
 const getAllBookList = async () => {
   let res = await getBookListService()
   console.log(res);
@@ -57,7 +57,7 @@ const rules = {
 // 新增图书信息
 const addBook = async () => {
   let res = await addBookService(bookModel.value)
-  ElMessage.success(res.message ? res.message : '新增图书成功')
+  ElMessage.success(res.message ? res.message : '新增成功')
   // 关闭弹窗
   dialogVisible.value = false
   // 刷新图书列表
@@ -73,12 +73,14 @@ const showDialog = (row) => {
   dialogVisible.value = true
   //将row中的数据赋值给bookModel
   bookModel.value = { ...row }
+  //后面删除图书的时候必须传递图书的id，所以扩展一个id属性
+  bookModel.value.id = row.id
 }
 
 // 修改图书信息
 const updateBook = async () => {
   let res = await updateBookService(bookModel.value)
-  ElMessage.success(res.message ? res.message : '修改图书成功')
+  ElMessage.success(res.message ? res.message : '修改成功')
   // 关闭弹窗
   dialogVisible.value = false
   // 刷新图书列表
@@ -89,13 +91,39 @@ const updateBook = async () => {
 const clearBookModel = () => {
   bookModel.value = { ...'' }
 }
+
+//删除分类  给删除按钮绑定事件
+const deleteBook = (row) => {
+  ElMessageBox.confirm(
+    '你确认删除该图书信息吗?',
+    '温馨提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    .then(async () => {
+      //用户点击了确认
+      let res = await deleteBookService(row.id)
+      ElMessage.success(res.message ? res.message : '删除成功')
+      // 刷新图书列表
+      getAllBookList()
+    })
+    .catch(() => {
+      //用户点击了取消
+      ElMessage({
+        type: 'info',
+        message: '取消删除',
+      })
+    })
+}
 </script>
 
 <template>
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <div class="select">
+        <div class="select"> 
           <div>
             <span>书名：</span>
             <el-input class="input" v-model="searchData.bookName" placeholder="请输入图书名称" />
@@ -126,7 +154,7 @@ const clearBookModel = () => {
         <template #default="{ row }">
           <!-- row 代表当前行的数据,后续在按钮的点击事件中可以用 row 获取当前行的数据 -->
           <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
-          <el-button :icon="Delete" circle plain type="danger"></el-button>
+          <el-button :icon="Delete" circle plain type="danger" @click="deleteBook(row)"></el-button>
         </template>
       </el-table-column>
       <template #empty>
