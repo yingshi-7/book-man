@@ -10,11 +10,10 @@ const bookData = ref([
 ])
 
 // 获取所有图书信息列表
-import { addBookService, deleteBookService, getBookListService, updateBookService } from '@/api/man.js';
+import { addBookService, deleteBookService, getBookListService, getSearchBookService, updateBookService } from '@/api/man.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 const getAllBookList = async () => {
   let res = await getBookListService()
-  console.log(res);
   bookData.value = res.data
 }
 getAllBookList()
@@ -117,13 +116,51 @@ const deleteBook = (row) => {
       })
     })
 }
+
+// 分页模块开关
+const pageSwitch = ref(false)
+
+//分页条数据模型
+const pageNum = ref(1)//当前页
+const total = ref(20)//总条数
+const pageSize = ref(5)//每页条数
+
+//当每页条数发生了变化，调用此函数
+const onSizeChange = (size) => {
+  pageSize.value = size
+  searchBook()
+}
+//当前页码发生变化，调用此函数
+const onCurrentChange = (num) => {
+  pageNum.value = num
+  searchBook()
+}
+
+// 图书搜索
+const searchBook = async () => {
+  let params = {
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
+    ...searchData.value
+  }
+  if (params.bookName === '' && params.author === '' && params.publishingHouse === '' && params.category === '') {
+    pageSwitch.value = false
+    getAllBookList()
+  } else {
+    pageSwitch.value = true
+    let res = await getSearchBookService(params)
+    console.log(res);
+    total.value = res.data.total
+    bookData.value = res.data.items
+  }
+}
 </script>
 
 <template>
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <div class="select"> 
+        <div class="select">
           <div>
             <span>书名：</span>
             <el-input class="input" v-model="searchData.bookName" placeholder="请输入图书名称" />
@@ -134,7 +171,7 @@ const deleteBook = (row) => {
             <span>类别：</span>
             <el-input class="input" v-model="searchData.category" placeholder="请输入类别名称" />
           </div>
-          <el-button class="search" type="primary">搜索</el-button>
+          <el-button class="search" type="primary" @click="searchBook()">搜索</el-button>
         </div>
         <div class="extra">
           <el-button type="primary" @click="title = '新增图书'; dialogVisible = true; clearBookModel()">新增图书</el-button>
@@ -161,6 +198,12 @@ const deleteBook = (row) => {
         <el-empty description="没有数据" />
       </template>
     </el-table>
+
+    <!-- 分页条 -->
+    <el-pagination v-show="pageSwitch" v-model:current-page="pageNum" v-model:page-size="pageSize"
+      :page-sizes="[5, 10, 15]" background layout="jumper, total, sizes, prev, pager, next" :total="total"
+      @size-change="onSizeChange" @current-change="onCurrentChange"
+      style="margin-top: 20px; justify-content: flex-end;" />
 
     <!-- 添加新增图书弹窗 -->
     <el-dialog v-model="dialogVisible" :title="title" width="30%">

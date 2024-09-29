@@ -19,3 +19,8 @@ export const updateBookService = (bookData) => {
 export const deleteBookService = (id) => {
   return request.delete('/library?id=' + id)
 }
+
+// 搜索图书信息
+export const getSearchBookService = (params) => {
+  return request.get('/library/query', {params: params})
+}
