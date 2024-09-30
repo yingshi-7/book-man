@@ -13,8 +13,13 @@ export const userRegisterService = (registerData) => {
 //用户登录接口
 export const userLoginService = (loginData) => {
   const params = new URLSearchParams()
-  for (let key in loginData){
-    params.append(key,loginData[key])
+  for (let key in loginData) {
+    params.append(key, loginData[key])
   }
-  return request.post('/user/login',params)
+  return request.post('/user/login', params)
+}
+
+// 根据用户id获取用户信息
+export const getUserInfo = (userId) => {
+  return request.get('/user/userInfo?id=' + userId)
 }

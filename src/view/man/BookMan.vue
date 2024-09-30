@@ -9,12 +9,23 @@ const bookData = ref([
   { bookName: '《红楼梦》', author: '曹雪芹', publishingHouse: '北京出版社', category: '文学', createTime: '1997-05-01', updateTime: '1997-05-01' },
 ])
 
+import { getUserInfo } from '@/api/user.js'
+// 获取当前登录用户的用户名
+const upBookData = async (createUser) => {
+  let res = await getUserInfo(createUser)
+  return createUser = res.data.username
+}
+
 // 获取所有图书信息列表
 import { addBookService, deleteBookService, getBookListService, getSearchBookService, updateBookService } from '@/api/man.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 const getAllBookList = async () => {
   let res = await getBookListService()
   bookData.value = res.data
+  // 将createUser字段替换为用户名
+  for (let i = 0; i < bookData.value.length; i++) {
+    bookData.value[i].createUser = await upBookData(bookData.value[i].createUser)
+  }
 }
 getAllBookList()
 
@@ -149,9 +160,13 @@ const searchBook = async () => {
   } else {
     pageSwitch.value = true
     let res = await getSearchBookService(params)
-    console.log(res);
+    //渲染视图
     total.value = res.data.total
     bookData.value = res.data.items
+    // 将createUser字段替换为用户名
+    for (let i = 0; i < bookData.value.length; i++) {
+      bookData.value[i].createUser = await upBookData(bookData.value[i].createUser)
+    }
   }
 }
 </script>
