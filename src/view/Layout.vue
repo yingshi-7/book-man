@@ -14,7 +14,17 @@ import {
   Reading,
 } from '@element-plus/icons-vue'
 import avatar from '../assets/default.png'
+// 引入pinia状态管理库
+import useUserInfoStore from '@/store/userInfo';
+import { getUserInfoService } from '@/api/user';
 
+const userInfoStore = useUserInfoStore()
+// 获取当前用户个人信息
+const getUserInfo = async () => {
+  let res = await getUserInfoService()
+  userInfoStore.setInfo(res.data)
+}
+getUserInfo()
 </script>
 
 <template>
@@ -101,10 +111,10 @@ import avatar from '../assets/default.png'
       <el-container>
         <!-- 头部区域 -->
         <el-header>
-          <div>当前位置: <strong>图书管理系统</strong></div>
+          <div>当前用户: <strong>{{ userInfoStore.info.username }}</strong></div>
           <el-dropdown placement="bottom-end">
             <span class="el-dropdown_box">
-              <el-avatar :src="avatar" />
+              <el-avatar :src="userInfoStore.info.avatar ? userInfoStore.info.avatar : avatar" />
               <el-icon>
                 <CaretBottom />
               </el-icon>

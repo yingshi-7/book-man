@@ -20,6 +20,11 @@ export const userLoginService = (loginData) => {
 }
 
 // 根据用户id获取用户信息
-export const getUserInfo = (userId) => {
-  return request.get('/user/userInfo?id=' + userId)
+export const getUserItemService = (userId) => {
+  return request.get('/user/userItem?id=' + userId)
+}
+
+// 获取当前用户信息
+export const getUserInfoService = () => {
+  return request.get('/user/userInfo')
 }
