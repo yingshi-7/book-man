@@ -28,3 +28,8 @@ export const getUserItemService = (userId) => {
 export const getUserInfoService = () => {
   return request.get('/user/userInfo')
 }
+
+// 更新用户信息
+export const updateUserInfoService = (userInfo) => {
+  return request.put('/user/update', userInfo)
+}

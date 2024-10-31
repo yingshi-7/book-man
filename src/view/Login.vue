@@ -51,7 +51,7 @@ const register = async () => {
 }
 
 import { useRouter } from 'vue-router'
-import {useTokenStore} from '@/store/token'
+import {useTokenStore} from '@/stores/token'
 //调用useTokenStore得到状态
 const tokenStore = useTokenStore()
 // 定义router, 用于跳转到注册页面

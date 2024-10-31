@@ -15,10 +15,10 @@ import {
 } from '@element-plus/icons-vue'
 import avatar from '../assets/default.png'
 // 引入pinia状态管理库
-import useUserInfoStore from '@/store/userInfo';
+import useUserInfoStore from '@/stores/userInfo';
 import { getUserInfoService } from '@/api/user';
 import { ElMessage,ElMessageBox } from 'element-plus';
-import { useTokenStore } from '@/store/token';
+import { useTokenStore } from '@/stores/token';
 
 // 获取token信息
 const tokenStore = useTokenStore()
