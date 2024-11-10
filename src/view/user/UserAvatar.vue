@@ -3,7 +3,7 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import useUserInfoStore from '@/stores/userInfo';
 import { useTokenStore } from '@/stores/token';
-import { uploadAvatarUpdateService } from '@/api/user';
+import { updateUserAvatarService } from '@/api/user';
 import { ElMessage } from 'element-plus';
 const uploadRef = ref()
 const tokenStore = useTokenStore()
@@ -22,7 +22,7 @@ const uploadSuccess = (result) => {
 // 调用接口，更新用户头像
 const updateAvatar = async () => {
   // 调用接口
-  let result = await uploadAvatarUpdateService(imgUrl.value)
+  let result = await updateUserAvatarService(imgUrl.value)
   ElMessage.success(result.message ? result.message : '修改成功')
   // 更新pinia中的用户信息
   userInfoStore.info.userPic = imgUrl.value

@@ -24,3 +24,8 @@ export const deleteBookService = (id) => {
 export const getSearchBookService = (params) => {
   return request.get('/library/query', {params: params})
 }
+
+//根据图书id获取图书详细信息
+export const getBookDetailService = (id) => {
+  return request.get('/library/detail?id=' + id)
+}

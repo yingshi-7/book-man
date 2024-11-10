@@ -35,8 +35,14 @@ export const updateUserInfoService = (userInfo) => {
 }
 
 //修改用户头像
-export const uploadAvatarUpdateService = (avatarUrl) => {
+export const updateUserAvatarService = (avatarUrl) => {
   let params = new URLSearchParams()
   params.append('avatarUrl', avatarUrl)
   return request.patch('/user/updateAvatar', params)
+}
+
+//修改密码
+export const updateUserPasswordService = (updatePwdData) => {
+  //application/json参数格式
+  return request.patch('/user/updatePwd', updatePwdData)    
 }

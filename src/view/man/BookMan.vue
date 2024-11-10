@@ -19,7 +19,7 @@ const upBookData = async (createUser) => {
 // 获取所有图书信息列表
 import { addBookService, deleteBookService, getBookListService, getSearchBookService, updateBookService } from '@/api/man.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { borrowBookService } from '@/api/borrow';
+// import { borrowBookService } from '@/api/borrow';
 const getAllBookList = async () => {
   let res = await getBookListService()
   bookData.value = res.data
