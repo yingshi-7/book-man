@@ -19,7 +19,8 @@ const upBookData = async (createUser) => {
 // 获取所有图书信息列表
 import { addBookService, deleteBookService, getBookListService, getSearchBookService, updateBookService } from '@/api/man.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
-// import { borrowBookService } from '@/api/borrow';
+import { borrowBookService } from '@/api/borrow';
+import useUserInfoStore from '@/stores/userInfo';
 const getAllBookList = async () => {
   let res = await getBookListService()
   bookData.value = res.data
@@ -129,10 +130,16 @@ const deleteBook = (row) => {
     })
 }
 
+//获取用户信息
+const userInfo = useUserInfoStore()
+// 借阅图书数据模型
+const borrowBookData = ref({})
 // 借阅图书
-// const borrowBook = (row) => {
-//   let res = borrowBookService(row.id)
-// }
+const borrowBook = async (row) => {
+  borrowBookData.value = {bookId: row.id, userId: userInfo.info.id}
+  let res = await borrowBookService(borrowBookData.value)
+  ElMessage.success(res.message ? res.message : '借阅成功')
+}
 // fnMap(待办)借阅图书按钮绑定事件
 
 // 分页模块开关
@@ -213,7 +220,7 @@ const searchBook = async () => {
         <template #default="{ row }">
           <!-- row 代表当前行的数据,后续在按钮的点击事件中可以用 row 获取当前行的数据 -->
           <el-tooltip class="box-checked-item" effect="dark" content="借阅" placement="top">
-            <el-button :icon="Checked" circle plain type="primary"></el-button>
+            <el-button :icon="Checked" circle plain type="primary" @click="borrowBook(row)"></el-button>
           </el-tooltip>
           <el-tooltip class="box-edit-item" effect="dark" content="编辑" placement="top">
             <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>

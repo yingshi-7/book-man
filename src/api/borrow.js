@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 // 借阅图书信息接口
 export const borrowBookService = (params) => {
-  return request.post('/borrowMan/borrow', { params: params })
+  return request.post('/borrowMan/borrow', params)
 }
 
 // 获取所有图书的借阅信息接口 
